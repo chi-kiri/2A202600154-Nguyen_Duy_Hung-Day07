@@ -178,12 +178,10 @@ class SemanticChunker:
         if not text:
             return []
             
-        # Split into sentences
         sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', text) if s.strip()]
         if not sentences:
             return []
             
-        # Optional: embedding_fn might only take 1 string, so we list comprehension
         embeddings = [self.embedding_fn(s) for s in sentences]
         
         chunks = []

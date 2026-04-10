@@ -3,7 +3,6 @@ import os
 import sys
 from pathlib import Path
 
-# Fix Windows console encoding for Vietnamese
 sys.stdout.reconfigure(encoding='utf-8')
 
 from src.chunking import RecursiveChunker, SemanticChunker
@@ -11,7 +10,6 @@ from src.embeddings import _mock_embed, LocalEmbedder
 from src.models import Document
 from src.store import EmbeddingStore
 
-# Use local embedding if possible to get real similarity scores!
 try:
     from sentence_transformers import SentenceTransformer
     embedder = LocalEmbedder()
@@ -28,10 +26,10 @@ def main():
         print(f"Không tìm thấy file .md nào trong {data_dir}")
         return
 
-    # Commented out RecursiveChunker as requested
+    # RecursiveChunker
     # chunker = RecursiveChunker(chunk_size=400)
     
-    # Use Semantic Chunker
+    # Semantic Chunker
     print("Khởi tạo SemanticChunker (Ngưỡng similarity = 0.45)...")
     chunker = SemanticChunker(embedding_fn=embedder, threshold=0.45)
     all_chunks = []

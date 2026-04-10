@@ -20,13 +20,11 @@ class KnowledgeBaseAgent:
 
     def answer(self, question: str, top_k: int = 3) -> str:
         # TODO: retrieve chunks, build prompt, call llm_fn
-        # 1. Retrieve relevant chunks
         results = self._store.search(question, top_k=top_k)
 
         if not results:
             return "I don't know."
 
-        # 2. Build context
         context_parts = []
         for i, r in enumerate(results):
             content = r.get("content", "")
@@ -34,7 +32,6 @@ class KnowledgeBaseAgent:
 
         context = "\n\n".join(context_parts)
 
-        # 3. Build prompt
         prompt = f"""
         You are a helpful assistant. Answer the question based ONLY on the context below.
 
@@ -47,7 +44,6 @@ class KnowledgeBaseAgent:
         Answer:
         """
 
-        # 4. Call LLM
         answer = self._llm_fn(prompt)
 
         return answer.strip()
